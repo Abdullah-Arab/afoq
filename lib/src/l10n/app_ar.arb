@@ -45,7 +45,11 @@
     "welcome":"مرحبا",
     "welcomeMessage":"مرحبا بك في التطبيق",
     "profile":"الملف الشخصي",
-    "settings":"الاعدادات"
+    "settings":"الاعدادات",
+    "tryLater":"حاول مرة اخرى",
+    "emptyDescription":"قم بإضافة سيارة جديدة",
+    "addCar":"إضافة سيارة"
+
 
 
 

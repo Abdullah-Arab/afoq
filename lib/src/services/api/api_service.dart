@@ -12,13 +12,7 @@ abstract class ApiService {
 
   Future<Auth> register(
       String email,
-      String password,
-      String name,
-      String ownerName,
-      String phone,
-      String phone2,
-      String address,
-      String passwordConfirmation);
+      String password);
 
   Future<void> deleteAccount();
 }

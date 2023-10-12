@@ -1,4 +1,4 @@
-import 'package:flutter_starter/src/features/auth/ui/tabs/home_tab.dart';
+import 'package:flutter_starter/src/features/app/ui/tabs/home_tab.dart';
 
 import '../../auth/logic/auth_cubit.dart';
 import '../../auth/ui/auth_screen.dart';

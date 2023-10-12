@@ -91,7 +91,11 @@ class FirebaseService {
   Future<List<Car>> getCars() async {
     try {
       final snapshot = await _firestore.collection('cars').get();
-      return snapshot.docs.map((doc) => Car.fromJson(doc.data())).toList();
+      locator<Log>().info('fetched ${snapshot.docs.length}');
+
+      return snapshot.docs.map((doc) {
+        return Car.fromJson(doc.data());
+      }).toList();
     } catch (e) {
       rethrow;
     }

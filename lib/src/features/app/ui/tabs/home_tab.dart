@@ -1,9 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_starter/src/features/exception/ui/empty_view.dart';
 import 'package:flutter_starter/src/features/exception/ui/exception_view.dart';
 import 'package:flutter_starter/src/features/my_cars/logic/cubit/my_cars_cubit.dart';
 import 'package:flutter_starter/src/features/my_cars/models/car.dart';
 import 'package:flutter_starter/src/features/my_cars/ui/car_card.dart';
+import 'package:flutter_starter/src/services/router/auto_router.dart';
 import 'package:flutter_starter/src/services/service_locator/locator.dart';
 
 class HomeTab extends StatelessWidget {
@@ -29,6 +32,16 @@ class HomeTab extends StatelessWidget {
         builder: (context, state) {
           return state.maybeMap(
             loaded: (state) {
+              // check if there are no cars
+              if (state.cars.isEmpty) {
+                return EmptyView(
+                  onClick: () {
+                    // add car screen
+                    AutoRouter.of(context).push(const AddCarRoute());
+                  },
+                );
+              }
+
               return ListView.builder(
                 itemCount: state.cars.length,
                 itemBuilder: (context, index) {

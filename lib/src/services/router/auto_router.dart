@@ -2,6 +2,7 @@ import '../../features/auth/ui/auth_screen.dart';
 import '../../features/app/ui/app_container_screen.dart';
 import 'package:auto_route/auto_route.dart';
 
+import '../../features/exception/ui/add_car_screen.dart';
 
 part 'auto_router.gr.dart';
 
@@ -12,5 +13,6 @@ class AppRouter extends _$AppRouter {
         /// routes go here
         AutoRoute(page: AuthRoute.page),
         AutoRoute(page: AppContainerRoute.page, initial: true),
+        AutoRoute(page: AddCarRoute.page),
       ];
 }

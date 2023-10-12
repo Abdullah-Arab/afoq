@@ -45,7 +45,7 @@ class ExceptionView extends StatelessWidget {
           ),
           gap16,
           if (onRetry != null)
-            ElevatedButton(
+            FilledButton(
               style: ElevatedButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
                 backgroundColor: Theme.of(context).colorScheme.errorContainer,
