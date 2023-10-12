@@ -15,20 +15,33 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    AppContainerRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const AppContainerScreen(),
+      );
+    },
     AuthRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const AuthScreen(),
       );
     },
-    HomeRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const HomeScreen(),
-      );
-    },
-
   };
+}
+
+/// generated route for
+/// [AppContainerScreen]
+class AppContainerRoute extends PageRouteInfo<void> {
+  const AppContainerRoute({List<PageRouteInfo>? children})
+      : super(
+          AppContainerRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'AppContainerRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -41,34 +54,6 @@ class AuthRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'AuthRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [HomeScreen]
-class HomeRoute extends PageRouteInfo<void> {
-  const HomeRoute({List<PageRouteInfo>? children})
-      : super(
-          HomeRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HomeRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [LandingScreen]
-class LandingRoute extends PageRouteInfo<void> {
-  const LandingRoute({List<PageRouteInfo>? children})
-      : super(
-          LandingRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'LandingRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

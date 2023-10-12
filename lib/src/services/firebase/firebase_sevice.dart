@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_starter/src/features/my_cars/models/car.dart';
+
 import '/src/services/logger/logger.dart';
 import '/src/services/service_locator/locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Register a new user with email and password
   Future<UserCredential?> register(String email, String password) async {
@@ -69,6 +73,43 @@ class FirebaseService {
   Future<void> logout() async {
     try {
       await _auth.signOut();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // add to firestore
+  Future<void> addCar(Car car) async {
+    try {
+      await _firestore.collection('cars').add(car.toJson());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // get from firestore
+  Future<List<Car>> getCars() async {
+    try {
+      final snapshot = await _firestore.collection('cars').get();
+      return snapshot.docs.map((doc) => Car.fromJson(doc.data())).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // update firestore
+  Future<void> updateCar(Car car) async {
+    try {
+      await _firestore.collection('cars').doc(car.id).update(car.toJson());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // delete from firestore
+  Future<void> deleteCar(String id) async {
+    try {
+      await _firestore.collection('cars').doc(id).delete();
     } catch (e) {
       rethrow;
     }

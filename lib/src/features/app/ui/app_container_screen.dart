@@ -1,3 +1,4 @@
+import 'package:flutter_starter/src/features/auth/ui/tabs/home_tab.dart';
 
 import '../../auth/logic/auth_cubit.dart';
 import '../../auth/ui/auth_screen.dart';
@@ -10,17 +11,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class AppContainerScreen extends StatefulWidget {
+  const AppContainerScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<AppContainerScreen> createState() => _AppContainerScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _AppContainerScreenState extends State<AppContainerScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<Widget> _pages = const [
-    Text('Home'),
+    HomeTab(),
     Text("Profile"),
     Text("settings"),
   ];

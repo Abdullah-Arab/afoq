@@ -1,4 +1,3 @@
-
 import '../logic/auth_cubit.dart';
 import '/src/constants/gaps.dart';
 import '/src/constants/paddings.dart';
@@ -39,59 +38,30 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: Container(
-        margin: paddingH16,
-        height: double.infinity,
-        child: SafeArea(
+      // resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: Container(
+          margin: paddingH16,
+          height: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Expanded(
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(defaultRadius),
-                    color: primaryColor,
-                  ),
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Expanded(
-                      //   // width: double.infinity,
-                      //   child: ClipRRect(
-                      //     borderRadius: BorderRadius.circular(defaultRadius),
-                      //     child: Image.asset(
-                      //       'assets/images/img2.jpg',
-                      //       fit: BoxFit.cover,
-                      //     ),
-                      //   ),
-                      // ),
-                      Padding(
-                        padding: paddingH16,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            gapH32,
-                            Text(
-                              AppLocalizations.of(context)!.welcome,
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            gapH16,
-                            Text(
-                              AppLocalizations.of(context)!.welcomeMessage,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            gapH32,
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     gap64,
+              //     Text(
+              //       AppLocalizations.of(context)!.welcome,
+              //       style: Theme.of(context).textTheme.headlineLarge,
+              //     ),
+              //     gapH16,
+              //     Text(
+              //       AppLocalizations.of(context)!.welcomeMessage,
+              //       style: Theme.of(context).textTheme.bodyLarge,
+              //     ),
+              //   ],
+              // ),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 width: double.infinity,
@@ -264,6 +234,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                 ),
               ),
+              gap32,
             ],
           ),
         ),

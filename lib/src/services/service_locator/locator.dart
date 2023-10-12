@@ -1,4 +1,7 @@
 
+import 'package:flutter_starter/src/features/my_cars/data/my_cars_repository.dart';
+import 'package:flutter_starter/src/features/my_cars/logic/cubit/my_cars_cubit.dart';
+
 import '../../features/auth/logic/auth_cubit.dart';
 import '/src/services/firebase/firebase_sevice.dart';
 import '/src/services/logger/logger.dart';
@@ -14,6 +17,7 @@ Future<void> configureDependencies() async {
   locator.registerSingleton<Log>(Log());
   locator.registerSingleton<FirebaseService>(FirebaseService());
   locator.registerLazySingleton<AuthCubit>(() => AuthCubit());
+  locator.registerLazySingleton<MyCarsCubit>(() => MyCarsCubit(MyCarsRepository()));
 }
 
 // Future<void> _setupStorage() async {

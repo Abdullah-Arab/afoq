@@ -53,11 +53,11 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDL5sOseiOUFWCfYfwxJzT3RKEPnPJieEc',
-    appId: '1:638154572693:ios:fc3044de84a6fe7e63ec9c',
-    messagingSenderId: '638154572693',
-    projectId: 'flutter-starter-96c21',
-    storageBucket: 'flutter-starter-96c21.appspot.com',
-    iosBundleId: 'com.example.flutterStarter',
+    apiKey: 'AIzaSyDI-omj9wQx34Q0sspcgId8DQlttFCBA2s',
+    appId: '1:955979991474:ios:e1cffb0444e19587527cab',
+    messagingSenderId: '955979991474',
+    projectId: 'afoq-d0eb9',
+    storageBucket: 'afoq-d0eb9.appspot.com',
+    iosBundleId: 'com.afoq.app',
   );
 }

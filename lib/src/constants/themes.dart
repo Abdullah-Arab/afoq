@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-const primaryColor = Colors.blue;
+
+const primaryColor = Colors.orange;
 //   MaterialColor(_primaryColorPrimaryValue, <int, Color>{
 // 50: Color(0xFFE6F6FF),
 // 100: Color(0xFFC1EAFF),
@@ -27,46 +27,48 @@ const primaryColor = Colors.blue;
 
 ThemeData primaryTheme = ThemeData(
   useMaterial3: true,
-  colorScheme: ColorScheme.fromSwatch(primarySwatch: primaryColor),
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: primaryColor,
+  ),
   fontFamily: 'Almarai',
-  listTileTheme: const ListTileThemeData(
-    subtitleTextStyle: TextStyle(
-      fontFamily: 'Almarai',
-      color: Color(0xFF4C4C4C),
-      fontSize: 20,
-      fontWeight: FontWeight.w500,
-    ),
-    titleTextStyle: TextStyle(
-      fontFamily: 'Almarai',
-      color: Color(0xFFCBCBCB),
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
-      height: 1.5,
-    ),
-  ),
-  textTheme: const TextTheme(),
-  filledButtonTheme: FilledButtonThemeData(
-    style: ButtonStyle(
-      shape: MaterialStateProperty.all(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-      //foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
-    ),
-  ),
+  // listTileTheme: const ListTileThemeData(
+  //   subtitleTextStyle: TextStyle(
+  //     fontFamily: 'Almarai',
+  //     color: Color(0xFF4C4C4C),
+  //     fontSize: 20,
+  //     fontWeight: FontWeight.w500,
+  //   ),
+  //   titleTextStyle: TextStyle(
+  //     fontFamily: 'Almarai',
+  //     color: Color(0xFFCBCBCB),
+  //     fontSize: 16,
+  //     fontWeight: FontWeight.w400,
+  //     height: 1.5,
+  //   ),
+  // ),
+  // textTheme: const TextTheme(),
+  // filledButtonTheme: FilledButtonThemeData(
+  //   style: ButtonStyle(
+  //     shape: MaterialStateProperty.all(
+  //       RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(12),
+  //       ),
+  //     ),
+  //     //foregroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
+  //   ),
+  // ),
 
-  outlinedButtonTheme: OutlinedButtonThemeData(
-    style: ButtonStyle(
-      backgroundColor: const MaterialStatePropertyAll(Colors.white),
-      foregroundColor: const MaterialStatePropertyAll(Colors.black),
-      shape: MaterialStateProperty.all(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-      ),
-    ),
-  ),
+  // outlinedButtonTheme: OutlinedButtonThemeData(
+  //   style: ButtonStyle(
+  //     backgroundColor: const MaterialStatePropertyAll(Colors.white),
+  //     foregroundColor: const MaterialStatePropertyAll(Colors.black),
+  //     shape: MaterialStateProperty.all(
+  //       RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.circular(12),
+  //       ),
+  //     ),
+  //   ),
+  // ),
 
   // iconButtonTheme: IconButtonThemeData(
   //   style: ButtonStyle(
