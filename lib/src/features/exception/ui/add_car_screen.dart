@@ -1,17 +1,22 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_starter/src/constants/gaps.dart';
+
 import 'package:flutter_starter/src/constants/paddings.dart';
 import 'package:flutter_starter/src/constants/themes.dart';
+import 'package:flutter_starter/src/features/my_cars/models/car_document.dart';
+import 'package:flutter_starter/src/services/logger/logger.dart';
+import 'package:flutter_starter/src/services/service_locator/locator.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:uid/uid.dart';
 
+import '../../my_cars/logic/cubit/my_cars_cubit.dart';
 import '../../my_cars/models/car.dart';
-import '../../my_cars/models/car_document.dart';
 
 @RoutePage()
 class AddCarScreen extends StatefulWidget {
@@ -23,241 +28,339 @@ class AddCarScreen extends StatefulWidget {
 
 class _AddCarScreenState extends State<AddCarScreen> {
   Color _currentColor = Colors.white;
-  final List<FormBuilderTextField> fields = [];
+  final _formKey = GlobalKey<FormState>();
+  final _colorController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _modelController = TextEditingController();
+  final _plateNumberController = TextEditingController();
+  List<CarDocument> _documents = [];
+  final _documentFormKey = GlobalKey<FormState>();
+  final _documentTitleController = TextEditingController();
+  final _documentDescriptionController = TextEditingController();
+  final _documentIssueDateController = TextEditingController();
+  final _documentExpiryDateController = TextEditingController();
+
+  @override
+  void dispose() {
+    _colorController.dispose();
+    _nameController.dispose();
+    _modelController.dispose();
+    _plateNumberController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormBuilderState>();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.addCar),
       ),
       body: Center(
         child: Padding(
-          padding: padding16,
-          child: FormBuilder(
-            key: _formKey,
-            // autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(children: [
-              FormBuilderTextField(
-                name: 'name',
-                decoration: InputDecoration(
-                  border: defaultInputBorder,
-                  labelText: AppLocalizations.of(context)!.carName,
-                  hintText: AppLocalizations.of(context)!.carNameHint,
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(
-                      errorText: AppLocalizations.of(context)!.carNameRequired),
-                ]),
-              ),
-              gap16,
-              FormBuilderTextField(
-                name: 'model',
-                decoration: InputDecoration(
-                  border: defaultInputBorder,
-                  labelText: AppLocalizations.of(context)!.carModel,
-                  hintText: AppLocalizations.of(context)!.carModelHint,
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(
-                      errorText:
-                          AppLocalizations.of(context)!.carModelRequired),
-                ]),
-              ),
-              gap16,
-              FormBuilderTextField(
-                name: 'color',
-                onTap: () {
-                  _showColorPicker();
-                },
-                decoration: InputDecoration(
-                  border: defaultInputBorder,
-                  labelText:
-                      _currentColor.value.toRadixString(16).toUpperCase(),
-                  //AppLocalizations.of(context)!.carColor
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.color_lens),
-                    onPressed: _showColorPicker,
-                  ),
-                  prefixIcon: Container(
-                    width: 16,
-                    height: 16,
-                    margin: paddingH8,
-                    decoration: BoxDecoration(
-                      color: _currentColor,
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(defaultRadius),
-                    ),
-                  ),
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(
-                      errorText:
-                          AppLocalizations.of(context)!.carColorRequired),
-                ]),
-                onChanged: (value) {
-                  setState(() {
-                    _currentColor = Color(int.parse(value!));
-                  });
-                },
-                valueTransformer: (value) => value?.toString(),
-              ),
-              gap16,
-              FormBuilderTextField(
-                name: 'plateNumber',
-                decoration: InputDecoration(
-                  border: defaultInputBorder,
-                  labelText: AppLocalizations.of(context)!.carPlateNumber,
-                  hintText: AppLocalizations.of(context)!.carPlateNumberHint,
-                ),
-                validator: FormBuilderValidators.compose([
-                  FormBuilderValidators.required(
-                      errorText:
-                          AppLocalizations.of(context)!.carPlateNumberRequired),
-                ]),
-              ),
-              gap16,
-              Expanded(
-                child: ListView.builder(
-                  itemCount: fields.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return FormBuilder(
-                      child: Column(
-                        children: [
-                          FormBuilderTextField(
-                            name: 'documentTitle',
-                            decoration: InputDecoration(
-                              border: defaultInputBorder,
-                              labelText: AppLocalizations.of(context)!
-                                  .carDocumentTitle,
-                              hintText: AppLocalizations.of(context)!
-                                  .carDocumentTitleHint,
-                            ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                  errorText: AppLocalizations.of(context)!
-                                      .carDocumentTitleRequired),
-                            ]),
-                          ),
-                          gap16,
-                          FormBuilderTextField(
-                            name: 'documentDescription',
-                            decoration: InputDecoration(
-                              border: defaultInputBorder,
-                              labelText: AppLocalizations.of(context)!
-                                  .carDocumentDescription,
-                              hintText: AppLocalizations.of(context)!
-                                  .carDocumentDescriptionHint,
-                            ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                  errorText: AppLocalizations.of(context)!
-                                      .carDocumentDescriptionRequired),
-                            ]),
-                          ),
-                          gap16,
-                          FormBuilderDateTimePicker(
-                            name: 'documentIssueDate',
-                            decoration: InputDecoration(
-                              border: defaultInputBorder,
-                              labelText: AppLocalizations.of(context)!
-                                  .carDocumentIssueDate,
-                              hintText: AppLocalizations.of(context)!
-                                  .carDocumentIssueDateHint,
-                            ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                  errorText: AppLocalizations.of(context)!
-                                      .carDocumentIssueDateRequired),
-                            ]),
-                          ),
-                          gap16,
-                          FormBuilderDateTimePicker(
-                            name: 'documentExpiryDate',
-                            decoration: InputDecoration(
-                              border: defaultInputBorder,
-                              labelText: AppLocalizations.of(context)!
-                                  .carDocumentExpiryDate,
-                              hintText: AppLocalizations.of(context)!
-                                  .carDocumentExpiryDateHint,
-                            ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                  errorText: AppLocalizations.of(context)!
-                                      .carDocumentExpiryDateRequired),
-                            ]),
-                          ),
-                          gap16,
-                        ],
+            padding: padding16,
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        border: defaultInputBorder,
+                        labelText: AppLocalizations.of(context)!.carName,
                       ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: () {
-                    setState(() {
-                      fields.add(
-                        FormBuilderTextField(
-                          name: 'documentTitle',
-                          decoration: InputDecoration(
-                            border: defaultInputBorder,
-                            labelText:
-                                AppLocalizations.of(context)!.carDocumentTitle,
-                            hintText: AppLocalizations.of(context)!
-                                .carDocumentTitleHint,
-                          ),
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(
-                                errorText: AppLocalizations.of(context)!
-                                    .carDocumentTitleRequired),
-                          ]),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                            errorText:
+                                AppLocalizations.of(context)!.carNameRequired),
+                      ]),
+                    ),
+                    gap16,
+                    TextFormField(
+                      controller: _modelController,
+                      decoration: InputDecoration(
+                        border: defaultInputBorder,
+                        labelText: AppLocalizations.of(context)!.carModel,
+                      ),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                            errorText:
+                                AppLocalizations.of(context)!.carModelRequired),
+                      ]),
+                    ),
+                    gap16,
+                    TextFormField(
+                      controller: _plateNumberController,
+                      decoration: InputDecoration(
+                        border: defaultInputBorder,
+                        labelText: AppLocalizations.of(context)!.carPlateNumber,
+                      ),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                            errorText: AppLocalizations.of(context)!
+                                .carPlateNumberRequired),
+                      ]),
+                    ),
+                    gap16,
+                    TextFormField(
+                      controller: _colorController,
+                      onTap: () {
+                        _showColorPicker();
+                      },
+                      decoration: InputDecoration(
+                        border: defaultInputBorder,
+                        labelText: AppLocalizations.of(context)!.carColor,
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.color_lens),
+                          onPressed: _showColorPicker,
                         ),
-                      );
-                    });
-                  },
-                  child: Text(AppLocalizations.of(context)!.carDocumentsHint),
+                        prefixIcon: Container(
+                          width: 16,
+                          height: 16,
+                          margin: padding8,
+                          decoration: BoxDecoration(
+                            color: _currentColor,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(defaultRadius),
+                          ),
+                        ),
+                      ),
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                            errorText:
+                                AppLocalizations.of(context)!.carColorRequired),
+                      ]),
+                    ),
+                    gap16,
+                    Card(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(defaultRadius),
+                        side: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: padding16,
+                        child: Form(
+                          key: _documentFormKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.carDocuments,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              gap16,
+                              TextFormField(
+                                controller: _documentTitleController,
+                                decoration: InputDecoration(
+                                  border: defaultInputBorder,
+                                  labelText: AppLocalizations.of(context)!
+                                      .carDocumentTitle,
+                                ),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(
+                                      errorText: AppLocalizations.of(context)!
+                                          .carDocumentTitleRequired),
+                                ]),
+                              ),
+                              gap16,
+                              TextFormField(
+                                controller: _documentDescriptionController,
+                                decoration: InputDecoration(
+                                  border: defaultInputBorder,
+                                  labelText: AppLocalizations.of(context)!
+                                      .carDocumentDescription,
+                                ),
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(
+                                      errorText: AppLocalizations.of(context)!
+                                          .carDocumentDescriptionRequired),
+                                ]),
+                              ),
+                              gap16,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: TextFormField(
+                                      readOnly: true,
+                                      controller: _documentIssueDateController,
+                                      decoration: InputDecoration(
+                                        border: defaultInputBorder,
+                                        labelText: AppLocalizations.of(context)!
+                                            .carDocumentIssueDate,
+                                      ),
+                                      validator: FormBuilderValidators.compose([
+                                        FormBuilderValidators.required(
+                                            errorText: AppLocalizations.of(
+                                                    context)!
+                                                .carDocumentIssueDateRequired),
+                                      ]),
+                                      onTap: () async {
+                                        DateTime? pickedDate = await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(1950),
+                                            //DateTime.now() - not to allow to choose before today.
+                                            lastDate: DateTime(2100));
+
+                                        if (pickedDate != null) {
+                                          String formattedDate =
+                                              DateFormat('yyyy-MM-dd')
+                                                  .format(pickedDate);
+                                          setState(() {
+                                            _documentIssueDateController.text =
+                                                formattedDate; //set output date to TextField value.
+                                          });
+                                        } else {}
+                                      },
+                                    ),
+                                  ),
+                                  gap16,
+                                  Expanded(
+                                    child: TextFormField(
+                                      readOnly: true,
+                                      controller: _documentExpiryDateController,
+                                      decoration: InputDecoration(
+                                        border: defaultInputBorder,
+                                        labelText: AppLocalizations.of(context)!
+                                            .carDocumentExpiryDate,
+                                      ),
+                                      validator: FormBuilderValidators.compose(
+                                        [
+                                          FormBuilderValidators.required(
+                                              errorText: AppLocalizations.of(
+                                                      context)!
+                                                  .carDocumentExpiryDateRequired),
+                                        ],
+                                      ),
+                                      onTap: () async {
+                                        DateTime? pickedDate = await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(1950),
+                                            //DateTime.now() - not to allow to choose before today.
+                                            lastDate: DateTime(2100));
+
+                                        if (pickedDate != null) {
+                                          String formattedDate =
+                                              DateFormat('yyyy-MM-dd')
+                                                  .format(pickedDate);
+                                          setState(() {
+                                            _documentExpiryDateController.text =
+                                                formattedDate; //set output date to TextField value.
+                                          });
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              gap16,
+                              SizedBox(
+                                width: double.infinity,
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    if (_documentFormKey.currentState!
+                                        .validate()) {
+                                      final document = CarDocument(
+                                        id: DateTime.now()
+                                            .microsecondsSinceEpoch
+                                            .toString(),
+                                        title: _documentTitleController.text,
+                                        description:
+                                            _documentDescriptionController.text,
+                                        issueDate: DateTime.parse(
+                                            _documentIssueDateController.text),
+                                        expiryDate: DateTime.parse(
+                                            _documentExpiryDateController.text),
+                                      );
+                                      setState(() {
+                                        _documents.add(document);
+                                      });
+                                      // clear form
+                                      _documentTitleController.clear();
+                                      _documentDescriptionController.clear();
+                                      _documentIssueDateController.clear();
+                                      _documentExpiryDateController.clear();
+                                    }
+                                  },
+                                  child:
+                                      Text(AppLocalizations.of(context)!.save),
+                                ),
+                              ),
+                              gap16,
+                              const Divider(),
+                              gap16,
+                              ListView.builder(
+                                //scrollDirection: Axis.horizontal,
+
+                                shrinkWrap: true,
+                                itemCount: _documents.length,
+                                itemBuilder: (context, index) {
+                                  final document = _documents[index];
+                                  return ListTile(
+                                    title: Text(document.title),
+                                    subtitle: Text(document.description),
+                                    trailing: IconButton(
+                                      icon: const Icon(Icons.delete),
+                                      onPressed: () {
+                                        setState(() {
+                                          _documents.removeAt(index);
+                                        });
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    gap16,
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            if (_documents.isEmpty) {
+                              // show toast
+                              Fluttertoast.showToast(
+                                msg: AppLocalizations.of(context)!
+                                    .carDocumentsRequired,
+                                toastLength: Toast.LENGTH_LONG,
+                              );
+
+                              locator<Log>().info('No documents');
+
+                              return;
+                            }
+                            final car = Car(
+                              id: DateTime.now()
+                                  .microsecondsSinceEpoch
+                                  .toString(),
+                              name: _nameController.text,
+                              model: _modelController.text,
+                              color: _colorController.text,
+                              plateNumber: _plateNumberController.text,
+                              createdAt: DateTime.now(),
+                              documents: _documents,
+                            );
+                            locator<Log>().info('Car $car');
+                            locator<MyCarsCubit>().addCar(car);
+                            AutoRouter.of(context).pop();
+                          }
+                        },
+                        child: Text(AppLocalizations.of(context)!.save),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              gap16,
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.saveAndValidate()) {
-                      final formData = _formKey.currentState!.value;
-                      final documents = fields
-                          .map((form) => (form as FormBuilder))
-                          .map((data) => CarDocument(
-                                id: UId.getId(),
-                                title: 'tst',
-                                description: 'tst',
-                                issueDate: DateTime.now(),
-                                expiryDate: DateTime.now(),
-                              ))
-                          .toList();
-                      final car = Car(
-                        id: formData['id'],
-                        name: formData['name'],
-                        model: formData['model'],
-                        color: _currentColor.toString(),
-                        plateNumber: formData['plateNumber'],
-                        createdAt: formData['createdAt'],
-                        documents: documents,
-                      );
-                      // TODO: Save the car to the database
-                    }
-                  },
-                  child: Text(AppLocalizations.of(context)!.save),
-                ),
-              ),
-            ]),
-          ),
-        ),
+            )),
       ),
     );
   }
@@ -274,6 +377,8 @@ class _AddCarScreenState extends State<AddCarScreen> {
               onColorChanged: (color) {
                 setState(() {
                   _currentColor = color;
+                  _colorController.text =
+                      _currentColor.value.toRadixString(16).toUpperCase();
                 });
               },
               pickerAreaHeightPercent: 0.8,

@@ -14,7 +14,7 @@ class Car with _$Car{
     required String model,
     required String color,
     required String plateNumber,
-    required String createdAt,
+    required DateTime createdAt,
     required List<CarDocument> documents,
   }) = _Car;
 

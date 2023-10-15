@@ -25,7 +25,7 @@ mixin _$Car {
   String get model => throw _privateConstructorUsedError;
   String get color => throw _privateConstructorUsedError;
   String get plateNumber => throw _privateConstructorUsedError;
-  String get createdAt => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
   List<CarDocument> get documents => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,7 +44,7 @@ abstract class $CarCopyWith<$Res> {
       String model,
       String color,
       String plateNumber,
-      String createdAt,
+      DateTime createdAt,
       List<CarDocument> documents});
 }
 
@@ -92,7 +92,7 @@ class _$CarCopyWithImpl<$Res, $Val extends Car> implements $CarCopyWith<$Res> {
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       documents: null == documents
           ? _value.documents
           : documents // ignore: cast_nullable_to_non_nullable
@@ -113,7 +113,7 @@ abstract class _$$_CarCopyWith<$Res> implements $CarCopyWith<$Res> {
       String model,
       String color,
       String plateNumber,
-      String createdAt,
+      DateTime createdAt,
       List<CarDocument> documents});
 }
 
@@ -158,7 +158,7 @@ class __$$_CarCopyWithImpl<$Res> extends _$CarCopyWithImpl<$Res, _$_Car>
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       documents: null == documents
           ? _value._documents
           : documents // ignore: cast_nullable_to_non_nullable
@@ -193,7 +193,7 @@ class _$_Car implements _Car {
   @override
   final String plateNumber;
   @override
-  final String createdAt;
+  final DateTime createdAt;
   final List<CarDocument> _documents;
   @override
   List<CarDocument> get documents {
@@ -250,7 +250,7 @@ abstract class _Car implements Car {
       required final String model,
       required final String color,
       required final String plateNumber,
-      required final String createdAt,
+      required final DateTime createdAt,
       required final List<CarDocument> documents}) = _$_Car;
 
   factory _Car.fromJson(Map<String, dynamic> json) = _$_Car.fromJson;
@@ -266,7 +266,7 @@ abstract class _Car implements Car {
   @override
   String get plateNumber;
   @override
-  String get createdAt;
+  DateTime get createdAt;
   @override
   List<CarDocument> get documents;
   @override

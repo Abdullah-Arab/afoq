@@ -12,7 +12,7 @@ _$_Car _$$_CarFromJson(Map<String, dynamic> json) => _$_Car(
       model: json['model'] as String,
       color: json['color'] as String,
       plateNumber: json['plate_number'] as String,
-      createdAt: json['created_at'] as String,
+      createdAt: DateTime.parse(json['created_at'] as String),
       documents: (json['documents'] as List<dynamic>)
           .map((e) => CarDocument.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -24,6 +24,6 @@ Map<String, dynamic> _$$_CarToJson(_$_Car instance) => <String, dynamic>{
       'model': instance.model,
       'color': instance.color,
       'plate_number': instance.plateNumber,
-      'created_at': instance.createdAt,
+      'created_at': instance.createdAt.toIso8601String(),
       'documents': instance.documents.map((e) => e.toJson()).toList(),
     };

@@ -51,9 +51,9 @@ class FirebaseService {
       return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        // print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        // print('Wrong password provided for that user.');
       }
     } catch (e) {
       rethrow;
@@ -81,7 +81,7 @@ class FirebaseService {
   // add to firestore
   Future<void> addCar(Car car) async {
     try {
-      await _firestore.collection('cars').add(car.toJson());
+      await _firestore.collection('cars').doc(car.id).set(car.toJson());
     } catch (e) {
       rethrow;
     }
