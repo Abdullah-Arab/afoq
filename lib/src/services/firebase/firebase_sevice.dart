@@ -26,6 +26,8 @@ class FirebaseService {
         throw Exception(error.toString());
       });
       locator<Log>().info('User created $userCredential');
+      await createUserDocument(
+          userCredential.user!.uid,  email);
       // print(userCredential);
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -78,10 +80,24 @@ class FirebaseService {
     }
   }
 
+  // create user document in firestore
+  Future<void> createUserDocument(String uid, String email) async {
+    try {
+      await _firestore.collection('users').doc(uid).set({
+        'email': email,
+
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   // add to firestore
   Future<void> addCar(Car car) async {
     try {
-      await _firestore.collection('cars').doc(car.id).set(car.toJson());
+      // await _firestore.collection('cars').doc(car.id).set(car.toJson());
+      await _firestore.collection('users') .doc(_auth.currentUser!.uid)
+          .collection('cars').doc(car.id).set(car.toJson());
     } catch (e) {
       rethrow;
     }
@@ -90,7 +106,9 @@ class FirebaseService {
   // get from firestore
   Future<List<Car>> getCars() async {
     try {
-      final snapshot = await _firestore.collection('cars').get();
+      // final snapshot = await _firestore.collection('cars').get();
+      final snapshot = await _firestore.collection('users') .doc(_auth.currentUser!.uid)
+          .collection('cars').get();
       locator<Log>().info('fetched ${snapshot.docs.length}');
 
       return snapshot.docs.map((doc) {
@@ -104,7 +122,9 @@ class FirebaseService {
   // update firestore
   Future<void> updateCar(Car car) async {
     try {
-      await _firestore.collection('cars').doc(car.id).update(car.toJson());
+      // await _firestore.collection('cars').doc(car.id).update(car.toJson());
+      await _firestore.collection('users') .doc(_auth.currentUser!.uid)
+          .collection('cars').doc(car.id).update(car.toJson());
     } catch (e) {
       rethrow;
     }
@@ -113,7 +133,9 @@ class FirebaseService {
   // delete from firestore
   Future<void> deleteCar(String id) async {
     try {
-      await _firestore.collection('cars').doc(id).delete();
+      // await _firestore.collection('cars').doc(id).delete();
+      await _firestore.collection('users') .doc(_auth.currentUser!.uid)
+          .collection('cars').doc(id).delete();
     } catch (e) {
       rethrow;
     }

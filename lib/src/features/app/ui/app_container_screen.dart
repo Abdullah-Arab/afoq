@@ -1,4 +1,5 @@
 import 'package:flutter_starter/src/features/app/ui/tabs/home_tab.dart';
+import 'package:flutter_starter/src/features/app/ui/tabs/profile_tab.dart';
 
 import '../../auth/logic/auth_cubit.dart';
 import '../../auth/ui/auth_screen.dart';
@@ -22,7 +23,7 @@ class _AppContainerScreenState extends State<AppContainerScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<Widget> _pages = const [
     HomeTab(),
-    Text("Profile"),
+    ProfileTab(),
     Text("settings"),
   ];
   int _currentIndex = 0;
