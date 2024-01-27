@@ -1,9 +1,10 @@
 import 'package:flutter_starter/src/features/app/ui/tabs/home_tab.dart';
 import 'package:flutter_starter/src/features/app/ui/tabs/profile_tab.dart';
+import 'package:flutter_starter/src/features/exception/models/custom_exception.dart';
+import 'package:flutter_starter/src/features/exception/ui/exception_view.dart';
 
 import '../../auth/logic/auth_cubit.dart';
 import '../../auth/ui/auth_screen.dart';
-import '../../../utilities/components/error_widget.dart';
 import '../../../utilities/components/loading_widget.dart';
 import '/src/services/service_locator/locator.dart';
 import 'package:auto_route/auto_route.dart';
@@ -75,12 +76,18 @@ class _AppContainerScreenState extends State<AppContainerScreen> {
           error: (value) {
             return Scaffold(
               body: Center(
-                child: CustomErrorWidget(
-                  message: value.message,
-                  onRetry: () {
-                    locator<AuthCubit>().getAuth();
-                  },
-                ),
+                child: ExceptionView(
+              value.message,
+              onRetry: () {
+                locator<AuthCubit>().getAuth();
+              },
+            ),
+                // child: CustomErrorWidget(
+                //   message: value.message,
+                //   onRetry: () {
+                //     locator<AuthCubit>().getAuth();
+                //   },
+                // ),
               ),
             );
           },

@@ -49,9 +49,12 @@ class HomeTab extends StatelessWidget {
                 },
               );
             },
-            error: (state) => ExceptionView(state.exception, onRetry: () {
-              locator<MyCarsCubit>().getMyCars();
-            }),
+            error: (state) => ExceptionView(
+              state.exception,
+              onRetry: () {
+                locator<MyCarsCubit>().getMyCars();
+              },
+            ),
             orElse: () => const Center(child: CircularProgressIndicator()),
           );
         });

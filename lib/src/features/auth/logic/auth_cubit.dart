@@ -1,4 +1,4 @@
-import 'package:flutter_starter/src/utilities/exceptions/my_exception.dart';
+import 'package:flutter_starter/src/features/exception/models/custom_exception.dart';
 
 import '../data/auth_repository.dart';
 import '../models/auth.dart';
@@ -22,12 +22,13 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final auth = await _authRepository.login(email, password);
       emit(AuthState.authenticated(auth));
-    } on MyException catch (e) {
+    } on CustomException catch (e) {
       locator<Log>().error(e.toString());
       emit(AuthState.error(e));
     } catch (e) {
       locator<Log>().error(e.toString());
-      emit(const AuthState.error(MyException("Unknown error", "404")));
+      emit(const AuthState.error(
+          CustomException("Unknown error", errorType: "404")));
     }
   }
 
@@ -39,12 +40,15 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final auth = await _authRepository.register(email, password);
       emit(AuthState.authenticated(auth));
-    } on MyException catch (e) {
+    } on CustomException catch (e) {
       locator<Log>().error(e.toString());
       emit(AuthState.error(e));
     } catch (e) {
       locator<Log>().error(e.toString());
-      emit(const AuthState.error(MyException("Unknown error", "404")));
+      emit(const AuthState.error(CustomException(
+        "Unknown error",
+        errorType: "404",
+      )));
     }
   }
 
@@ -57,12 +61,12 @@ class AuthCubit extends Cubit<AuthState> {
       } else {
         emit(AuthState.authenticated(auth));
       }
-    } on MyException catch (e) {
+    } on CustomException catch (e) {
       locator<Log>().error(e.toString());
       emit(AuthState.error(e));
     } catch (e) {
       locator<Log>().error(e.toString());
-      emit(const AuthState.error(MyException("Unknown error", "404")));
+      emit(const AuthState.error(CustomException("Unknown error",errorType: "404")));
     }
   }
 
@@ -72,12 +76,12 @@ class AuthCubit extends Cubit<AuthState> {
       await _authRepository.logout();
       locator<StorageService>().clearAll();
       emit(const AuthState.unauthenticated());
-    } on MyException catch (e) {
+    } on CustomException catch (e) {
       locator<Log>().error(e.toString());
       emit(AuthState.error(e));
     } catch (e) {
       locator<Log>().error(e.toString());
-      emit(const AuthState.error(MyException("Unknown error", "404")));
+      emit(const AuthState.error(CustomException("Unknown error",errorType: "404")));
     }
   }
 
@@ -87,12 +91,12 @@ class AuthCubit extends Cubit<AuthState> {
       await _authRepository.deleteAccount();
       locator<StorageService>().clearAll();
       emit(const AuthState.unauthenticated());
-    } on MyException catch (e) {
+    } on CustomException catch (e) {
       locator<Log>().error(e.toString());
       emit(AuthState.error(e));
     } catch (e) {
       locator<Log>().error(e.toString());
-      emit(const AuthState.error(MyException("Unknown error", "404")));
+      emit(const AuthState.error(CustomException("Unknown error",errorType: "404")));
     }
   }
 }

@@ -13,6 +13,6 @@ class CustomException implements Exception {
 
   @override
   String toString() {
-    return '$prefix$message$errorType';
+    return '$prefix $message $errorType';
   }
 }
