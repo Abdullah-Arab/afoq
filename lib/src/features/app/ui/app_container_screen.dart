@@ -2,6 +2,7 @@ import 'package:flutter_starter/src/features/app/ui/tabs/home_tab.dart';
 import 'package:flutter_starter/src/features/app/ui/tabs/profile_tab.dart';
 import 'package:flutter_starter/src/features/exception/models/custom_exception.dart';
 import 'package:flutter_starter/src/features/exception/ui/exception_view.dart';
+import 'package:flutter_starter/src/services/router/auto_router.dart';
 
 import '../../auth/logic/auth_cubit.dart';
 import '../../auth/ui/auth_screen.dart';
@@ -71,17 +72,24 @@ class _AppContainerScreenState extends State<AppContainerScreen> {
                   ),
                 ],
               ),
+              floatingActionButton: FloatingActionButton.extended(
+                onPressed: () {
+                  AutoRouter.of(context).push(const AddCarRoute());
+                },
+                icon: const Icon(Icons.add),
+                label: Text(AppLocalizations.of(context)!.addCar),
+              ),
             );
           },
           error: (value) {
             return Scaffold(
               body: Center(
                 child: ExceptionView(
-              value.message,
-              onRetry: () {
-                locator<AuthCubit>().getAuth();
-              },
-            ),
+                  value.message,
+                  onRetry: () {
+                    locator<AuthCubit>().getAuth();
+                  },
+                ),
                 // child: CustomErrorWidget(
                 //   message: value.message,
                 //   onRetry: () {
