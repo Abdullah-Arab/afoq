@@ -33,6 +33,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const AuthScreen(),
       );
     },
+    CarDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<CarDetailRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CarDetailScreen(
+          key: args.key,
+          car: args.car,
+        ),
+      );
+    },
   };
 }
 
@@ -76,4 +86,42 @@ class AuthRoute extends PageRouteInfo<void> {
   static const String name = 'AuthRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CarDetailScreen]
+class CarDetailRoute extends PageRouteInfo<CarDetailRouteArgs> {
+  CarDetailRoute({
+    Key? key,
+    required Car car,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CarDetailRoute.name,
+          args: CarDetailRouteArgs(
+            key: key,
+            car: car,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CarDetailRoute';
+
+  static const PageInfo<CarDetailRouteArgs> page =
+      PageInfo<CarDetailRouteArgs>(name);
+}
+
+class CarDetailRouteArgs {
+  const CarDetailRouteArgs({
+    this.key,
+    required this.car,
+  });
+
+  final Key? key;
+
+  final Car car;
+
+  @override
+  String toString() {
+    return 'CarDetailRouteArgs{key: $key, car: $car}';
+  }
 }
