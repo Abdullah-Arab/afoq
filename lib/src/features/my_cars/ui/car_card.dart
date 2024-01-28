@@ -12,7 +12,10 @@ class CarCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text(car.name),
+        title: Text(
+          car.name,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         subtitle: Text(car.model),
         trailing: CircleAvatar(
           backgroundColor: stringToColor(car.color),
